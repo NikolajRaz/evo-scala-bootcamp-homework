@@ -6,16 +6,19 @@ object FirstHomework {
 
   def lcm(a: Int, b: Int): Int = {
     if (a == 0 || b == 0)
-      return 0
-    (a*b).abs/gcd(a, b)
+      0
+    else
+      (a*b).abs/gcd(a, b)
   }
 
   def gcd(a: Int, b: Int, isItFirstIteration: Boolean = true): Int = {
     if (a==0 || (b==0 && isItFirstIteration))
-      return 0
-    if (b==0)
-      a.abs
-    else
-      gcd(b, a%b, isItFirstIteration = false)
-  }
+      0
+    else {
+      if (b==0)
+        a.abs
+      else
+        gcd(b, a%b, isItFirstIteration = false)
+      }
+    }
 }
