@@ -11,14 +11,14 @@ object FirstHomework {
       (a*b).abs/gcd(a, b)
   }
 
-  def gcd(a: Int, b: Int, isItFirstIteration: Boolean = true): Int = {
-    if (a==0 || (b==0 && isItFirstIteration))
+  def gcd(a: Int, b: Int): Int = {
+    if (a==0 || b==0)
       0
     else {
-      if (b==0)
-        a.abs
+      if (a%b == 0)
+        b.abs
       else
-        gcd(b, a%b, isItFirstIteration = false)
+        gcd(b, a%b)
       }
     }
 }
