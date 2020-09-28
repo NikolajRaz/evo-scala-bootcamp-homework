@@ -14,11 +14,10 @@ object FirstHomework {
   def gcd(a: Int, b: Int): Int = {
     if (a==0 || b==0)
       0
-    else {
+    else
       if (a%b == 0)
         b.abs
       else
         gcd(b, a%b)
-      }
     }
 }
