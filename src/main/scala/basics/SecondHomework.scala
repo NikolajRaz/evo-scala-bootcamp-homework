@@ -71,18 +71,18 @@ object SecondHomework {
   final case class Triangle(firstPoint: Point, secondPoint: Point, thirdPoint: Point) extends Shape2D[Triangle] {
     override def x: Double = ???
     override def y: Double = ???
+    override def minX: Double = Set(firstPoint.x, secondPoint.x, thirdPoint.x).min
+    override def maxX: Double = Set(firstPoint.x, secondPoint.x, thirdPoint.x).max
+    override def minY: Double = Set(firstPoint.y, secondPoint.y, thirdPoint.y).min
+    override def maxY: Double = Set(firstPoint.y, secondPoint.y, thirdPoint.y).max
+    override def area: Double = math.sqrt(semiPerimeter*(semiPerimeter-firstSide)*(semiPerimeter-secondSide)*(semiPerimeter-thirdSide))
+    override def move(dx:Double, dy: Double): Triangle = Triangle(Point(firstPoint.x+dx, firstPoint.y+dy),Point(secondPoint.x+dx, secondPoint.y+dy), Point(thirdPoint.x+dx, thirdPoint.y+dy))
+
     def firstSide: Double = sideLength(firstPoint.x, firstPoint.y, secondPoint.x, secondPoint.y)
     def secondSide: Double = sideLength(firstPoint.x, firstPoint.y, thirdPoint.x, thirdPoint.y)
     def thirdSide: Double = sideLength(secondPoint.x, secondPoint.y, thirdPoint.x, thirdPoint.y)
     def semiPerimeter: Double = (firstSide + secondSide + thirdSide)/2
-    def minX: Double = Set(firstPoint.x, secondPoint.x, thirdPoint.x).min
-    def maxX: Double = Set(firstPoint.x, secondPoint.x, thirdPoint.x).max
-    def minY: Double = Set(firstPoint.y, secondPoint.y, thirdPoint.y).min
-    def maxY: Double = Set(firstPoint.y, secondPoint.y, thirdPoint.y).max
     def sideLength(x1:Double, y1:Double, x2:Double, y2:Double):Double = Math.sqrt(Math.pow((x2-x1), 2) + Math.pow((y2-y1), 2))
-    override def area: Double = math.sqrt(semiPerimeter*(semiPerimeter-firstSide)*(semiPerimeter-secondSide)*(semiPerimeter-thirdSide))
-    override def move(dx:Double, dy: Double): Triangle = Triangle(Point(firstPoint.x+dx, firstPoint.y+dy),Point(secondPoint.x+dx, secondPoint.y+dy), Point(thirdPoint.x+dx, thirdPoint.y+dy))
-
   }
 
   final case class Square(x:Double, y:Double, sideLength: Double) extends Shape2D[Square] {
@@ -162,20 +162,21 @@ object SecondHomework {
     override def z: Double = apex.z
     override def x: Double = apex.x
     override def y: Double = apex.y
-    def height: Double = ???
-    def firstBaseSide: Double = sideLength(firstPoint.x, firstPoint.y, firstPoint.z , secondPoint.x, secondPoint.y, secondPoint.z)
-    def secondBaseSide: Double = sideLength(firstPoint.x, firstPoint.y, firstPoint.z, thirdPoint.x, thirdPoint.y, thirdPoint.z)
-    def thirdBaseSide: Double = sideLength(secondPoint.x, secondPoint.y, secondPoint.z, thirdPoint.x, thirdPoint.y, thirdPoint.z)
-    def baseSemiPerimeter: Double = (firstBaseSide + secondBaseSide + thirdBaseSide)/2
     override def minX: Double = Set(firstPoint.x, secondPoint.x, thirdPoint.x, apex.x).min
     override def maxX: Double = Set(firstPoint.x, secondPoint.x, thirdPoint.x, apex.x).max
     override def minY: Double = Set(firstPoint.y, secondPoint.y, thirdPoint.y, apex.y).min
     override def maxY: Double = Set(firstPoint.y, secondPoint.y, thirdPoint.y, apex.y).max
     override def minZ: Double = Set(firstPoint.z, secondPoint.z, thirdPoint.z, apex.z).min
     override def maxZ: Double = Set(firstPoint.z, secondPoint.z, thirdPoint.z, apex.z).max
-    def sideLength(x1:Double, y1:Double, x2:Double, y2:Double, z1:Double, z2:Double):Double = Math.sqrt(Math.pow((x2-x1), 2) + Math.pow((y2-y1), 2) + Math.pow(z2,z1))
     override def surfaceArea: Double = ???
     override def volume: Double = 1/3*math.sqrt(baseSemiPerimeter*(baseSemiPerimeter-firstBaseSide)*(baseSemiPerimeter-secondBaseSide)*(baseSemiPerimeter-thirdBaseSide))*height
-    override def move(dx: Double, dy: Double, dz: Double): Triangle3D = Triangle3D(Point3D(firstPoint.x+dx, firstPoint.y + dy, firstPoint.z+dz),Point3D(secondPoint.x+dx, secondPoint.y+dy, secondPoint.z+dz), Point3D(thirdPoint.x+dx, thirdPoint.y+dy, thirdPoint.z+dz), Point3D(apex.x+dx, apex.y+dy, apex.z+dz))
+    override def move(dx: Double, dy: Double, dz: Double): Triangle3D = Triangle3D(Point3D(firstPoint.x+dx, firstPoint.y + dy, firstPoint.z+dz),Point3D(secondPoint.x+dx, secondPoint.y+dy, secondPoint.z+dz), Point3D(thirdPoint.x+dx, thirdPoint.y+dy, thirdPoint.z+dz), Point3D(x+dx, y+dy, z+dz))
+
+    def height: Double = ???
+    def firstBaseSide: Double = sideLength(firstPoint.x, firstPoint.y, firstPoint.z , secondPoint.x, secondPoint.y, secondPoint.z)
+    def secondBaseSide: Double = sideLength(firstPoint.x, firstPoint.y, firstPoint.z, thirdPoint.x, thirdPoint.y, thirdPoint.z)
+    def thirdBaseSide: Double = sideLength(secondPoint.x, secondPoint.y, secondPoint.z, thirdPoint.x, thirdPoint.y, thirdPoint.z)
+    def baseSemiPerimeter: Double = (firstBaseSide + secondBaseSide + thirdBaseSide)/2
+    def sideLength(x1:Double, y1:Double, x2:Double, y2:Double, z1:Double, z2:Double):Double = Math.sqrt(Math.pow((x2-x1), 2) + Math.pow((y2-y1), 2) + Math.pow(z2,z1))
   }
 }
