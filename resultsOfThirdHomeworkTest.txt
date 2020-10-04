@@ -1,0 +1,12 @@
+Error: Incorrect format of dividend and divisor
+Error: Empty string or values are missing
+Error: Empty string or values are missing
+Error: Empty string or values are missing
+Error: Empty string or values are missing
+Error: Incorrect format of dividend and divisor
+4.0 divided by 5.0 is 0.8
+the sum of 5.0 5.0 6.0 8.5 is 24.5
+Error: Wrong command format
+the average of 4.0 3.0 8.5 4.0 is 4.875
+the minimum of 4.0 -3.0 -17.0 is -17.0
+the maximum of 4.0 -3.0 -17.0 is 4.0
