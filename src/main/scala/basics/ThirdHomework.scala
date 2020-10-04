@@ -41,7 +41,6 @@ object ThirdHomework {
 
   sealed trait Result
   final case class CorrectResult(value: String) extends Result
-  // adjust Result as required to match requirements
 
   def parseCommand(x: String): Either[ErrorMessage, Command] = {
     import Command._
@@ -63,16 +62,8 @@ object ThirdHomework {
     catch {
       case ex: Exception => Left(ErrorMessage("Wrong command format"))
     }
-    // implement this method
-    // Implementation hints:
-    // You can use String#split, convert to List using .toList, then pattern match on:
-    //   case x :: xs => ???
-
-    // Consider how to handle extra whitespace gracefully (without errors).
   }
 
-  // should return an error (using `Left` channel) in case of division by zero and other
-  // invalid operations
   def calculate(x: Command): Either[ErrorMessage, Result] = {
     import Command._
 
@@ -95,13 +86,7 @@ object ThirdHomework {
       command <- parseCommand(x)
       calculate <- calculate(command)
     }yield(calculate)).fold(left => s"Error: ${left.value}", right => renderResult(right))
-
-    // the import above will enable useful operations on Either-s such as `leftMap`
-    // (map over the Left channel) and `merge` (convert `Either[A, A]` into `A`),
-    // but you can also avoid using them using pattern matching.
-    // implement using a for-comprehension
   }
 
-  // This `main` method reads lines from stdin, passes each to `process` and outputs the return value to stdout
   def main(args: Array[String]): Unit = Source.stdin.getLines() map process foreach println
 }
