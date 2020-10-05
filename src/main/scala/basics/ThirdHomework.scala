@@ -49,7 +49,7 @@ object ThirdHomework {
       case _ :: Nil => Left(ErrorMessage("Empty string or values are missing"))
       case x :: xs => x match {
         case _ if xs.isEmpty => Left(ErrorMessage("Values are missing"))
-        case _ if !ifValuesHasCorrectFormat(xs) => Left(ErrorMessage("Incorrect values format"))
+        case _ if ifValuesHasCorrectFormat(xs) => Left(ErrorMessage("Incorrect values format"))
         case "divide" => if (xs.length == 2 && xs(1).toDouble != 0) Right(Divide(xs.head.toDouble, xs(1).toDouble)) else Left(ErrorMessage("Incorrect format of dividend and divisor"))
         case "sum" => Right(Sum(xs.map(x => x.toDouble)))
         case "average" => Right(Average(xs.map(x => x.toDouble)))
@@ -62,10 +62,7 @@ object ThirdHomework {
 
   def ifValuesHasCorrectFormat(x: List[String]): Boolean = {
     val y = x.map(x => x.toDoubleOption)
-    if(y.contains(None))
-      false
-    else
-      true
+    y.contains(None)
   }
 
   def calculate(x: Command): Either[ErrorMessage, Result] = {
