@@ -44,23 +44,18 @@ object ThirdHomework {
 
   def parseCommand(x: String): Either[ErrorMessage, Command] = {
     import Command._
-
-    try {
-      x.split(" ").toList match {
-        case _ :: Nil => Left(ErrorMessage("Empty string or values are missing"))
-        case x :: xs => x match {
-          case _ if xs.isEmpty => Left(ErrorMessage("Values are missing"))
-          case "divide" => if (xs.length == 2 && xs(1).toDouble != 0) Right(Divide(xs.head.toDouble, xs(1).toDouble)) else Left(ErrorMessage("Incorrect format of dividend and divisor"))
-          case "sum" => Right(Sum(xs.map(x => x.toDouble)))
-          case "average" => Right(Average(xs.map(x => x.toDouble)))
-          case "min" => Right(Min(xs.map(x => x.toDouble)))
-          case "max" => Right(Max(xs.map(x => x.toDouble)))
-          case _ => Left(ErrorMessage("Wrong command was used"))
-        }
+    val convertedInput = x.trim.replaceAll(" +", " ")
+    convertedInput.split(" ").toList match {
+      case _ :: Nil => Left(ErrorMessage("Empty string or values are missing"))
+      case x :: xs => x match {
+        case _ if xs.isEmpty => Left(ErrorMessage("Values are missing"))
+        case "divide" => if (xs.length == 2 && xs(1).toDouble != 0) Right(Divide(xs.head.toDouble, xs(1).toDouble)) else Left(ErrorMessage("Incorrect format of dividend and divisor"))
+        case "sum" => Right(Sum(xs.map(x => x.toDouble)))
+        case "average" => Right(Average(xs.map(x => x.toDouble)))
+        case "min" => Right(Min(xs.map(x => x.toDouble)))
+        case "max" => Right(Max(xs.map(x => x.toDouble)))
+        case _ => Left(ErrorMessage("Wrong command was used"))
       }
-    }
-    catch {
-      case ex: Exception => Left(ErrorMessage("Wrong command format"))
     }
   }
 
