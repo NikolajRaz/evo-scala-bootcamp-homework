@@ -60,7 +60,7 @@ object ThirdHomework {
     }
   }
 
-  def ifValuesHasCorrectFormat(x: List[String]):Boolean = {
+  def ifValuesHasCorrectFormat(x: List[String]): Boolean = {
     val y = x.map(x => x.toDoubleOption)
     if(y.contains(None))
       false
