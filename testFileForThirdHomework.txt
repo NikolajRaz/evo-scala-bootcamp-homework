@@ -3,6 +3,7 @@ divide
 sadads
 sum
 
+sum sum
 divide 4 0
 divide 4 5
 sum 5 5 6 8.5
