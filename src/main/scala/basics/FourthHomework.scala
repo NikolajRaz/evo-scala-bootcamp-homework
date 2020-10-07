@@ -20,7 +20,7 @@ object FourthHomework {
   // output `List(Set("e") -> 0, Set("a", "d") -> 1, Set("b", "f", "g") -> 2, Set("c") -> 4)`.
   def sortConsideringEqualValues[T](map: Map[T, Int]): List[(Set[T], Int)] = {
     map.map {
-      case(k,v) => {
+      case(_,v) => {
         (map.collect{ case (x, y) if y == v => x }.toSet, v)
       }
     }.toList.distinct
