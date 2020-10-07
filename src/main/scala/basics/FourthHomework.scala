@@ -21,6 +21,6 @@ object FourthHomework {
   def sortConsideringEqualValues[T](map: Map[T, Int]): List[(Set[T], Int)] = {
     map.map {
       case(_,v) => (map.collect{ case (x, y) if y == v => x }.toSet, v)
-    }.toList.sortBy({case (_,v) => v})
+    }.toList.sortBy({case (_, v) => v})
   }
 }
