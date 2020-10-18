@@ -12,7 +12,7 @@ object ErrorHandlingHomework {
   object ValidationError {
 
     final case object NameFormatIsInvalid extends ValidationError {
-      override def toString: String = "You should enter name and family name correctly in this field"
+      override def toString: String = "Format is invalid, should be - Name Surname"
     }
 
     final case object CardNumberFormatIsInvalid extends ValidationError {
@@ -20,7 +20,7 @@ object ErrorHandlingHomework {
     }
 
     final case object CardNumberLengthIsInvalid extends ValidationError {
-      override def toString: String = "Card number should content only numbers"
+      override def toString: String = "Card number length is invalid"
     }
 
     final case object ExpirationDateIsInvalid extends ValidationError {
