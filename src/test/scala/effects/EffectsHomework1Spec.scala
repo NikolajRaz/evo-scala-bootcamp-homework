@@ -19,9 +19,11 @@ class EffectsHomework1Spec extends AnyWordSpec {
     }
   }
 
-  "IO" should {
-    "map" in {
+  "map" should {
+    "return IO which contains 8" in {
       example1.map(x => x * 4).unsafeRunSync() shouldEqual 8
+    }
+    "return IO which contains string - 2" in {
       example1.map(_.toString).unsafeRunSync() shouldEqual "2"
     }
   }
