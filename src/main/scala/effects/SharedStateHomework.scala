@@ -74,7 +74,7 @@ object SharedStateHomework extends IOApp {
   override def run(args: List[String]): IO[ExitCode] = {
 
     for {
-      cache <- Cache.of[IO, Int, String](100.seconds, 4.seconds)
+      cache <- Cache.of[IO, Int, String](10.seconds, 4.seconds)
       _ <- cache.put(1, "Hello")
       _ <- cache.put(2, "World")
       _ <- cache
