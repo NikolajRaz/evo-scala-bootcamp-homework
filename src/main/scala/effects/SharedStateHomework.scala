@@ -1,4 +1,4 @@
-package com.evolutiongaming.bootcamp.effects
+package effects
 
 import cats.implicits._
 import cats.Monad
