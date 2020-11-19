@@ -24,6 +24,11 @@ object SharedStateHomework extends IOApp {
     def get(key: K): F[Option[V]]
 
     def put(key: K, value: V): F[Unit]
+
+    //Added for Http homework
+    def update(key: K, value: V): F[Unit]
+
+    def remove(key: K): F[Unit]
   }
 
   class RefCache[F[_]: Clock: Monad, K, V](state: Ref[F, Map[K, (Long, V)]],
@@ -43,6 +48,19 @@ object SharedStateHomework extends IOApp {
                 curState ++ Map(key -> (curTime + expiresIn.toMillis, value))
           )
         )
+
+    //Added for Http homework
+    def update(key: K, value: V): F[Unit] =
+      Clock[F]
+        .realTime(MILLISECONDS)
+        .flatMap(
+          curTime =>
+            state.update(
+              v => v.updated(key, (curTime + expiresIn.toMillis, value))
+          )
+        )
+
+    def remove(key: K): F[Unit] = state.update(v => v.removed(key))
   }
 
   object Cache {
