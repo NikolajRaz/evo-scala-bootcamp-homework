@@ -50,7 +50,7 @@ object GuessServer extends IOApp {
         case Some(value) =>
           attempts match {
             case Some(attemptsNumber) => {
-              val gameId = generateGameId(cache)
+              val gameId = generateGameId()
               val game = Game(value, attemptsNumber)
               cache.put(gameId, game) *> Ok(s"Game #${gameId} has started")
                 .map(_.addCookie("gameId", gameId.toString))
@@ -97,12 +97,18 @@ object GuessServer extends IOApp {
     else if (game.attempts > 1)
       if (game.number > userNumber)
         cache.update(id, Game(game.number, game.attempts - 1)) *> Ok(
-          "Your number is greater than guessed"
-        ).map(_.addCookie("gameStatus", "true".toString))
+          "Expected number is greater than provided one"
+        ).map(
+          _.addCookie("gameStatus", "true".toString)
+            .addCookie("isGreater", "true")
+        )
       else
         cache.update(id, Game(game.number, game.attempts - 1)) *> Ok(
-          "Your number is lower than guessed"
-        ).map(_.addCookie("gameStatus", "true".toString))
+          "Expected number is lower than provided one"
+        ).map(
+          _.addCookie("gameStatus", "true".toString)
+            .addCookie("isGreater", "false")
+        )
     else
       cache.remove(id) *> Ok(
         "Your answer is wrong and that was your last attempt"
@@ -122,7 +128,8 @@ object GuessServer extends IOApp {
     }
   }
 
-  def generateGameId(cache: Cache[IO, Int, Game]): Int = {
+  def generateGameId(): Int = {
+    //here I have a problem, I generate gameId, but actually not sure how to check if this gameId already has been created. If I will use my cache to check it, I will return an IO here.
     val r = scala.util.Random
     r.nextInt(Int.MaxValue)
   }
@@ -134,14 +141,14 @@ object GuessServer extends IOApp {
   override def run(args: List[String]): IO[ExitCode] =
     for {
       cache <- Cache.of[IO, Int, Game](3600.seconds, 100.seconds)
-      _ <- BlazeServerBuilder[IO](ExecutionContext.global)
+      result <- BlazeServerBuilder[IO](ExecutionContext.global)
         .bindHttp(port = 9001, host = "localhost")
         .withHttpApp(httpApp(cache))
         .serve
         .compile
         .drain
         .as(ExitCode.Success)
-    } yield ExitCode.Success
+    } yield result
 
 }
 object GuessClient extends IOApp {
@@ -202,12 +209,20 @@ object GuessClient extends IOApp {
         request <- curRequest
         response <- client.run(request).use(resp => IO(resp))
         _ <- response.as[String] >>= printLine
-        cookie <- IO(response.cookies.find(_.name == "gameStatus"))
-        _ <- cookie match {
+        gameStatus <- IO(response.cookies.find(_.name == "gameStatus"))
+        isGreater <- IO(response.cookies.find(_.name == "isGreater"))
+        _ <- gameStatus match {
           case Some(value) =>
-            if (value.content.toBooleanOption.getOrElse(false))
-              playGame(client, id, min, max)
-            else printLine("Game over")
+            if (value.content.toBooleanOption.getOrElse(false)) {
+              isGreater match {
+                case Some(greater) =>
+                  greater.content.toBooleanOption match {
+                    case Some(true)  => playGame(client, id, myGuess + 1, max)
+                    case Some(false) => playGame(client, id, min, myGuess - 1)
+                  }
+                case None => printLine("Unexpected error")
+              }
+            } else printLine("Game over")
           case None => printLine("Game status not found")
         }
       } yield ()
